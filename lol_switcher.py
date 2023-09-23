@@ -29,7 +29,7 @@ end tell
 minimization_cmd = """
 tell application "System Events"
     tell application process "%s"
-        set miniaturized to true
+        set visible to false
     end tell
 end tell
 """
@@ -45,13 +45,15 @@ def switch2lol(cmd=bring_front_cmd):
                         stderr=subprocess.STDOUT, encoding="utf-8", text=True)
     p.communicate(applescript)[0]
 
-p = subprocess.Popen(["./LeagueClient.app/Contents/MacOS/LeagueClient"], cwd="/Applications/League of Legends.app/Contents/LoL", stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+if __name__ == "__main__": 
+    p = subprocess.Popen(["./LeagueClient.app/Contents/MacOS/LeagueClient"], cwd="/Applications/League of Legends.app/Contents/LoL", stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
-log_buffer = ""
-for line in p.stdout:
-    line_str = line.decode()
-    print(line_str)
-    if "GAMESTATE_GAMELOOP EndRender & EndFrame" in line_str:
-        switch2lol()
-    elif "Push: LoadingScreen  Current: Gameplay" in line_str:
-        switch2lol(minimization_cmd)
+    log_buffer = ""
+    for line in p.stdout:
+        line_str = line.decode()
+        print(line_str)
+        if "GAMESTATE_GAMELOOP EndRender & EndFrame" in line_str:
+            switch2lol()
+        elif "LoadingScreen  Current: Gameplay" in line_str:
+            print("run minimization_cmd")
+            switch2lol(minimization_cmd)
