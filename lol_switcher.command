@@ -54,6 +54,6 @@ if __name__ == "__main__":
         print(line_str)
         if "GAMESTATE_GAMELOOP EndRender & EndFrame" in line_str:
             switch2lol()
-        elif "LoadingScreen  Current: Gameplay" in line_str:
+        elif "Set focus to app" in line_str:
             print("run minimization_cmd")
             switch2lol(minimization_cmd)
